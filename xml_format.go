@@ -37,7 +37,7 @@ type Commment struct {
 		IsAnonymous string `xml:"isAnonymous"`
 		Username    string `xml:"username"`
 	} `xml:"author"`
-	Thread struct {
+	Article struct {
 		Text string `xml:",chardata"`
 		ID   string `xml:"id,attr"`
 	} `xml:"thread"`

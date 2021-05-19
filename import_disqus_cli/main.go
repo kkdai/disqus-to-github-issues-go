@@ -31,21 +31,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Open our xmlFile
 	xmlFile, err := os.Open(*textPtr)
-	// if we os.Open returns an error then handle it
 	if err != nil {
 		fmt.Println(err)
 	}
-
-	fmt.Println("Successfully Opened users.xml")
-	// defer the closing of our xmlFile so that we can parse it later on
 	defer xmlFile.Close()
-
-	// read our opened xmlFile as a byte array.
 	byteValue, _ := ioutil.ReadAll(xmlFile)
 
-	// we initialize our Users array
 	var comments worker.DisqusStruct
 	if err := xml.Unmarshal(byteValue, &comments); err != nil {
 		fmt.Printf("err: %s \n", err)
