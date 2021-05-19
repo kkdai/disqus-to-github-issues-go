@@ -17,12 +17,14 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+
+	worker "github.com/kkdai/disqus-importor-go"
 )
 
 func main() {
 
 	// Open our xmlFile
-	xmlFile, err := os.Open("./example/evanlin_20210517.xml")
+	xmlFile, err := os.Open("../example/evanlin_20210517.xml")
 	// if we os.Open returns an error then handle it
 	if err != nil {
 		fmt.Println(err)
@@ -36,19 +38,17 @@ func main() {
 	byteValue, _ := ioutil.ReadAll(xmlFile)
 
 	// we initialize our Users array
-	var comments Disqus
-	// we unmarshal our byteArray which contains our
-	// xmlFiles content into 'users' which we defined above
+	var comments worker.Disqus
 	if err := xml.Unmarshal(byteValue, &comments); err != nil {
 		fmt.Printf("err: %s \n", err)
 		os.Exit(13)
 	}
 
-	// we iterate through every user within our users array and
-	// print out the user Type, their name, and their facebook url
-	// as just an example
 	for i, c := range comments.Post {
-		fmt.Printf("Post %n : authur:%s Msg:%s \n", i, c.Author.Name, c.Message)
+		fmt.Printf("Post: aticle ID:%s authur:%s Msg:%s \n", c.ID, c.Author.Name, c.Message)
+		if i > 5 {
+			break
+		}
 	}
 
 }
