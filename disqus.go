@@ -5,10 +5,12 @@ import (
 	"fmt"
 )
 
+//Disqus :
 type Disqus struct {
 	data *DisqusStruct
 }
 
+// NewDisqus: create disqus object.
 func NewDisqus(xml []byte) *Disqus {
 	var comments DisqusStruct
 	if err := x.Unmarshal(xml, &comments); err != nil {
@@ -18,6 +20,7 @@ func NewDisqus(xml []byte) *Disqus {
 	return &Disqus{data: &comments}
 }
 
+// GetAllComments: Get all comments.
 func (d *Disqus) GetAllComments() []Commment {
 	if d.data == nil {
 		return nil
@@ -34,10 +37,10 @@ func (d *Disqus) GetAllArticles() []Article {
 	return d.data.Articles
 }
 
-func (d *Disqus) GetArticleByComment(c *Commment) *Article {
-
+// GetArticleByComment: Get original article by comment.
+func (d *Disqus) GetArticleByComment(c Commment) *Article {
 	articles := d.GetAllArticles()
-	if len(articles) == 0 || c == nil {
+	if len(articles) == 0 || c.CreatedAt == "" {
 		return nil
 	}
 

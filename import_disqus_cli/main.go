@@ -13,7 +13,6 @@
 package main
 
 import (
-	"encoding/xml"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -38,17 +37,18 @@ func main() {
 	defer xmlFile.Close()
 	byteValue, _ := ioutil.ReadAll(xmlFile)
 
-	var comments worker.DisqusStruct
-	if err := xml.Unmarshal(byteValue, &comments); err != nil {
-		fmt.Printf("err: %s \n", err)
-		os.Exit(13)
+	disqus := worker.NewDisqus(byteValue)
+	if disqus == nil {
+		fmt.Println("XML parsing failed.")
+		return
 	}
 
-	for i, c := range comments.Commments {
-		fmt.Printf("Post: aticle ID:%s authur:%s Msg:%s \n", c.ID, c.Author.Name, c.Message)
+	comments := disqus.GetAllComments()
+	for i, c := range comments {
+		article := disqus.GetArticleByComment(c)
+		fmt.Printf("Post: aticle ID:%s authur:%s Msg:%s  title:%s \n", c.ID, c.Author.Name, c.Message, article.Title)
 		if i > 5 {
 			break
 		}
 	}
-
 }
