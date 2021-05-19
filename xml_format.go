@@ -3,7 +3,7 @@ package disqusimportorgo
 import "encoding/xml"
 
 // Disqus: Disqus comment export structure in go
-type DisqusFormat struct {
+type DisqusStruct struct {
 	XMLName        xml.Name       `xml:"disqus"`
 	Text           string         `xml:",chardata"`
 	Xmlns          string         `xml:"xmlns,attr"`
@@ -11,8 +11,8 @@ type DisqusFormat struct {
 	Xsi            string         `xml:"xsi,attr"`
 	SchemaLocation string         `xml:"schemaLocation,attr"`
 	Category       CategoryStruct `xml:"category"`
-	Threads        []Thread       `xml:"thread"`
-	Posts          []Post         `xml:"post"`
+	Articles       []Article      `xml:"thread"`
+	Commments      []Commment     `xml:"post"`
 }
 
 type CategoryStruct struct {
@@ -23,7 +23,7 @@ type CategoryStruct struct {
 	IsDefault string `xml:"isDefault"`
 }
 
-type Post struct {
+type Commment struct {
 	Text      string `xml:",chardata"`
 	AttrID    string `xml:"id,attr"`
 	ID        string `xml:"id"`
@@ -47,7 +47,7 @@ type Post struct {
 	} `xml:"parent"`
 }
 
-type Thread struct {
+type Article struct {
 	Text     string `xml:",chardata"`
 	AttrID   string `xml:"id,attr"`
 	ID       string `xml:"id"`

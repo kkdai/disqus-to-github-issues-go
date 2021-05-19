@@ -6,11 +6,11 @@ import (
 )
 
 type Disqus struct {
-	data DisqusFormat
+	data DisqusStruct
 }
 
 func NewDisqus(xml []byte) *Disqus {
-	var comments DisqusFormat
+	var comments DisqusStruct
 	if err := x.Unmarshal(xml, &comments); err != nil {
 		fmt.Printf("err: %s \n", err)
 		return nil
@@ -18,6 +18,6 @@ func NewDisqus(xml []byte) *Disqus {
 	return &Disqus{data: comments}
 }
 
-func (d *Disqus) GetAllComments() []Post {
-	return d.data.Posts
+func (d *Disqus) GetAllComments() []Commment {
+	return d.data.Commments
 }
