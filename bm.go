@@ -6,7 +6,6 @@ import (
 	"log"
 	"strings"
 
-	"github.com/gernest/mention"
 	"github.com/google/go-github/v35/github"
 	"github.com/mvdan/xurls"
 	"golang.org/x/oauth2"
@@ -45,7 +44,7 @@ func (b *BookmarkMgr) SaveBookmark(tweet string) error {
 	client := github.NewClient(tc)
 
 	links := xurls.Relaxed.FindAllString(tweet, -1)
-	tags := mention.GetTags('#', strings.NewReader(tweet))
+	// tags := mention.GetTags('#', "") //strings.NewReader(tweet))
 	title := fmt.Sprintf("%s", tweet)
 
 	var body string
@@ -63,9 +62,9 @@ func (b *BookmarkMgr) SaveBookmark(tweet string) error {
 			commentBody = strings.Replace(commentBody, v, "", -1)
 		}
 
-		for _, v := range tags {
-			commentBody = strings.Replace(commentBody, v, "", -1)
-		}
+		// for _, v := range tags {
+		// 	commentBody = strings.Replace(commentBody, "" /*v*/, "", -1)
+		// }
 
 		commentBody = strings.Replace(commentBody, "#", "", -1)
 		commentBody = strings.TrimLeft(commentBody, " ")
@@ -87,14 +86,14 @@ func (b *BookmarkMgr) SaveBookmark(tweet string) error {
 	}
 
 	// Push to github issue
-	if tags == nil {
-		tags = []string{}
-	}
+	// if tags == nil {
+	// 	tags = []string{}
+	// }
 	input := &github.IssueRequest{
 		Title:    String(title),
 		Body:     String(body),
 		Assignee: String(""),
-		Labels:   &tags,
+		Labels:   &[]string{}, //&tags,
 	}
 
 	_, _, err := client.Issues.Create(ctx, b.User, b.Repo, input)
