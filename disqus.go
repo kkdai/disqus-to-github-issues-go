@@ -45,7 +45,7 @@ func (d *Disqus) GetArticleByComment(c Comment) *Article {
 	}
 
 	for _, a := range articles {
-		if a.AttrID == c.Article.ID {
+		if isCommentBelongArticle(c, a) {
 			return &a
 		}
 	}
@@ -62,10 +62,14 @@ func (d *Disqus) GetAllCommentsByArticle(a Article) []Comment {
 
 	var retComments []Comment
 	for _, c := range allComments {
-		if c.AttrID == a.ID {
+		if isCommentBelongArticle(c, a) {
 			retComments = append(retComments, c)
 		}
 	}
 
 	return retComments
+}
+
+func isCommentBelongArticle(c Comment, a Article) bool {
+	return c.Article.ID == a.AttrID
 }

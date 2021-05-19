@@ -43,4 +43,9 @@ func TestGetAllComments(t *testing.T) {
 	if article == nil {
 		t.Fatal("Get article error!")
 	}
+
+	aComment := disqus.GetAllCommentsByArticle(*article)
+	if len(aComment) < 1 {
+		t.Fatal("Get comment by article error!", aComment, comments[0])
+	}
 }
