@@ -3,6 +3,7 @@ package disqusimportorgo
 import (
 	x "encoding/xml"
 	"fmt"
+	"strings"
 )
 
 //Disqus :
@@ -72,4 +73,13 @@ func (d *Disqus) GetAllCommentsByArticle(a Article) []Comment {
 
 func isCommentBelongArticle(c Comment, a Article) bool {
 	return c.Article.ID == a.AttrID
+}
+
+func getShortPath(s1 string) string {
+	lastIndex := strings.LastIndex(s1, "/")
+	if lastIndex == len(s1)-1 {
+		lastIndex = strings.LastIndex(s1[:lastIndex], "/")
+	}
+
+	return s1[lastIndex+1:]
 }

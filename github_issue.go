@@ -1,105 +1,94 @@
 package disqusimportorgo
 
-import (
-	"context"
-	"fmt"
-	"log"
-	"strings"
+// func String(v string) *string { return &v }
 
-	"github.com/google/go-github/v35/github"
-	"github.com/mvdan/xurls"
-	"golang.org/x/oauth2"
-)
+// //BookmarkMgr :
+// type BookmarkMgr struct {
+// 	Token string
+// 	User  string
+// 	Repo  string
+// }
 
-func String(v string) *string { return &v }
+// //NewBookmark :
+// func NewBookmark(user, repo, token string) *BookmarkMgr {
+// 	new := new(BookmarkMgr)
+// 	new.User = user
+// 	new.Repo = repo
+// 	new.Token = token
+// 	return new
+// }
 
-//BookmarkMgr :
-type BookmarkMgr struct {
-	Token string
-	User  string
-	Repo  string
-}
+// //CheckIfExist :
+// func (b *BookmarkMgr) CheckIfExist() bool {
+// 	return false
+// }
 
-//NewBookmark :
-func NewBookmark(user, repo, token string) *BookmarkMgr {
-	new := new(BookmarkMgr)
-	new.User = user
-	new.Repo = repo
-	new.Token = token
-	return new
-}
+// //SaveBookmark :
+// func (b *BookmarkMgr) SaveBookmark(tweet string) error {
+// 	ctx := context.Background()
+// 	ts := oauth2.StaticTokenSource(
+// 		&oauth2.Token{AccessToken: b.Token},
+// 	)
+// 	tc := oauth2.NewClient(ctx, ts)
+// 	client := github.NewClient(tc)
 
-//CheckIfExist :
-func (b *BookmarkMgr) CheckIfExist() bool {
-	return false
-}
+// 	links := xurls.Relaxed.FindAllString(tweet, -1)
+// 	// tags := mention.GetTags('#', "") //strings.NewReader(tweet))
+// 	title := fmt.Sprintf("%s", tweet)
 
-//SaveBookmark :
-func (b *BookmarkMgr) SaveBookmark(tweet string) error {
-	ctx := context.Background()
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: b.Token},
-	)
-	tc := oauth2.NewClient(ctx, ts)
-	client := github.NewClient(tc)
+// 	var body string
+// 	var commentBody string
+// 	strTs := strings.SplitN(tweet, "#", 2)
 
-	links := xurls.Relaxed.FindAllString(tweet, -1)
-	// tags := mention.GetTags('#', "") //strings.NewReader(tweet))
-	title := fmt.Sprintf("%s", tweet)
+// 	if len(strTs) >= 2 {
+// 		title = strTs[0]
+// 		commentBody = strTs[1]
+// 	}
 
-	var body string
-	var commentBody string
-	strTs := strings.SplitN(tweet, "#", 2)
+// 	//To get pure comment, we need remove links and tags
+// 	if commentBody != "" {
+// 		for _, v := range links {
+// 			commentBody = strings.Replace(commentBody, v, "", -1)
+// 		}
 
-	if len(strTs) >= 2 {
-		title = strTs[0]
-		commentBody = strTs[1]
-	}
+// 		// for _, v := range tags {
+// 		// 	commentBody = strings.Replace(commentBody, "" /*v*/, "", -1)
+// 		// }
 
-	//To get pure comment, we need remove links and tags
-	if commentBody != "" {
-		for _, v := range links {
-			commentBody = strings.Replace(commentBody, v, "", -1)
-		}
+// 		commentBody = strings.Replace(commentBody, "#", "", -1)
+// 		commentBody = strings.TrimLeft(commentBody, " ")
+// 	}
 
-		// for _, v := range tags {
-		// 	commentBody = strings.Replace(commentBody, "" /*v*/, "", -1)
-		// }
+// 	//Prepare links, if no link just not post to github issue
+// 	if len(links) == 0 {
+// 		log.Println("Skip post:", tweet)
+// 		return nil
+// 	}
 
-		commentBody = strings.Replace(commentBody, "#", "", -1)
-		commentBody = strings.TrimLeft(commentBody, " ")
-	}
+// 	for _, v := range links {
+// 		body = fmt.Sprintf("%s [link](%s)", body, v)
+// 	}
 
-	//Prepare links, if no link just not post to github issue
-	if len(links) == 0 {
-		log.Println("Skip post:", tweet)
-		return nil
-	}
+// 	//Add comment after links
+// 	if commentBody != "" {
+// 		body = fmt.Sprintf("%s \n %s", body, commentBody)
+// 	}
 
-	for _, v := range links {
-		body = fmt.Sprintf("%s [link](%s)", body, v)
-	}
+// 	// Push to github issue
+// 	// if tags == nil {
+// 	// 	tags = []string{}
+// 	// }
+// 	input := &github.IssueRequest{
+// 		Title:    String(title),
+// 		Body:     String(body),
+// 		Assignee: String(""),
+// 		Labels:   &[]string{}, //&tags,
+// 	}
 
-	//Add comment after links
-	if commentBody != "" {
-		body = fmt.Sprintf("%s \n %s", body, commentBody)
-	}
-
-	// Push to github issue
-	// if tags == nil {
-	// 	tags = []string{}
-	// }
-	input := &github.IssueRequest{
-		Title:    String(title),
-		Body:     String(body),
-		Assignee: String(""),
-		Labels:   &[]string{}, //&tags,
-	}
-
-	_, _, err := client.Issues.Create(ctx, b.User, b.Repo, input)
-	if err != nil {
-		fmt.Printf("Issues.Create returned error: %v", err)
-		return err
-	}
-	return nil
-}
+// 	_, _, err := client.Issues.Create(ctx, b.User, b.Repo, input)
+// 	if err != nil {
+// 		fmt.Printf("Issues.Create returned error: %v", err)
+// 		return err
+// 	}
+// 	return nil
+// }
