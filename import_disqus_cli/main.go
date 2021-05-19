@@ -46,7 +46,7 @@ func main() {
 	byteValue, _ := ioutil.ReadAll(xmlFile)
 
 	// we initialize our Users array
-	var comments worker.Disqus
+	var comments worker.DisqusFormat
 	if err := xml.Unmarshal(byteValue, &comments); err != nil {
 		fmt.Printf("err: %s \n", err)
 		os.Exit(13)
