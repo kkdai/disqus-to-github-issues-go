@@ -21,7 +21,7 @@ func NewDisqus(xml []byte) *Disqus {
 }
 
 // GetAllComments: Get all comments.
-func (d *Disqus) GetAllComments() []Commment {
+func (d *Disqus) GetAllComments() []Comment {
 	if d.data == nil {
 		return nil
 	}
@@ -38,7 +38,7 @@ func (d *Disqus) GetAllArticles() []Article {
 }
 
 // GetArticleByComment: Get original article by comment.
-func (d *Disqus) GetArticleByComment(c Commment) *Article {
+func (d *Disqus) GetArticleByComment(c Comment) *Article {
 	articles := d.GetAllArticles()
 	if len(articles) == 0 || c.CreatedAt == "" {
 		return nil
@@ -51,4 +51,21 @@ func (d *Disqus) GetArticleByComment(c Commment) *Article {
 	}
 
 	return nil
+}
+
+// GetAllCommentsByArticle: Get all comments by specific article
+func (d *Disqus) GetAllCommentsByArticle(a Article) []Comment {
+	allComments := d.GetAllComments()
+	if len(allComments) == 0 {
+		return nil
+	}
+
+	var retComments []Comment
+	for _, c := range allComments {
+		if c.AttrID == a.ID {
+			retComments = append(retComments, c)
+		}
+	}
+
+	return retComments
 }

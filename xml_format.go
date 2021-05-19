@@ -12,7 +12,7 @@ type DisqusStruct struct {
 	SchemaLocation string         `xml:"schemaLocation,attr"`
 	Category       CategoryStruct `xml:"category"`
 	Articles       []Article      `xml:"thread"`
-	Commments      []Commment     `xml:"post"`
+	Commments      []Comment      `xml:"post"`
 }
 
 type CategoryStruct struct {
@@ -23,7 +23,7 @@ type CategoryStruct struct {
 	IsDefault string `xml:"isDefault"`
 }
 
-type Commment struct {
+type Comment struct {
 	Text      string `xml:",chardata"`
 	AttrID    string `xml:"id,attr"`
 	ID        string `xml:"id"`
