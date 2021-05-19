@@ -17,3 +17,7 @@ func NewDisqus(xml []byte) *Disqus {
 	}
 	return &Disqus{data: comments}
 }
+
+func (d *Disqus) GetAllComments() []Post {
+	return d.data.Posts
+}

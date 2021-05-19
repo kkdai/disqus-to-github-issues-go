@@ -52,7 +52,7 @@ func main() {
 		os.Exit(13)
 	}
 
-	for i, c := range comments.Post {
+	for i, c := range comments.Posts {
 		fmt.Printf("Post: aticle ID:%s authur:%s Msg:%s \n", c.ID, c.Author.Name, c.Message)
 		if i > 5 {
 			break
