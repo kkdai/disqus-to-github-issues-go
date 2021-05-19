@@ -14,6 +14,7 @@ package main
 
 import (
 	"encoding/xml"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -22,9 +23,16 @@ import (
 )
 
 func main() {
+	textPtr := flag.String("f", "../example/evanlin_20210517.xml", "xml file address (e.g. `../example/evanlin_20210517.xml`)")
+	flag.Parse()
+
+	if *textPtr == "" {
+		flag.PrintDefaults()
+		os.Exit(1)
+	}
 
 	// Open our xmlFile
-	xmlFile, err := os.Open("../example/evanlin_20210517.xml")
+	xmlFile, err := os.Open(*textPtr)
 	// if we os.Open returns an error then handle it
 	if err != nil {
 		fmt.Println(err)
