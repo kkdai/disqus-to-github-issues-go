@@ -3,7 +3,7 @@ package disqusimportorgo
 import "encoding/xml"
 
 // Disqus: Disqus comment export structure in go
-type Disqus struct {
+type DisqusFormat struct {
 	XMLName        xml.Name `xml:"disqus"`
 	Text           string   `xml:",chardata"`
 	Xmlns          string   `xml:"xmlns,attr"`
