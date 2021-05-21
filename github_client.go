@@ -3,8 +3,6 @@ package disqusimportorgo
 import (
 	"context"
 	"fmt"
-	"log"
-	"strings"
 
 	"github.com/google/go-github/v35/github"
 	"golang.org/x/oauth2"
@@ -33,8 +31,8 @@ func (b *CommentClient) CheckIfExist() bool {
 	return false
 }
 
-//CreateComment :
-func (b *CommentClient) CreateComment(tweet string) error {
+//CreateIssue :
+func (b *CommentClient) CreateIssue(shortLink, fullTitle, link string) error {
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: b.Token},
@@ -42,47 +40,11 @@ func (b *CommentClient) CreateComment(tweet string) error {
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
 
-	links := []string{}
-	// tags := mention.GetTags('#', "") //strings.NewReader(tweet))
-	title := fmt.Sprintf("%s", tweet)
-
-	var body string
-	var commentBody string
-	strTs := strings.SplitN(tweet, "#", 2)
-
-	if len(strTs) >= 2 {
-		title = strTs[0]
-		commentBody = strTs[1]
-	}
-
-	//To get pure comment, we need remove links and tags
-	if commentBody != "" {
-		for _, v := range links {
-			commentBody = strings.Replace(commentBody, v, "", -1)
-		}
-
-		commentBody = strings.Replace(commentBody, "#", "", -1)
-		commentBody = strings.TrimLeft(commentBody, " ")
-	}
-
-	//Prepare links, if no link just not post to github issue
-	if len(links) == 0 {
-		log.Println("Skip post:", tweet)
-		return nil
-	}
-
-	for _, v := range links {
-		body = fmt.Sprintf("%s [link](%s)", body, v)
-	}
-
-	//Add comment after links
-	if commentBody != "" {
-		body = fmt.Sprintf("%s \n %s", body, commentBody)
-	}
+	commentBody := fmt.Sprintf("# %s \n \n \n [%s](%s)", fullTitle, link, link)
 
 	input := &github.IssueRequest{
-		Title:    String(title),
-		Body:     String(body),
+		Title:    String(shortLink),
+		Body:     String(commentBody),
 		Assignee: String(""),
 		Labels:   &[]string{}, //&tags,
 	}
