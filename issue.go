@@ -1,7 +1,6 @@
 package disqusimportorgo
 
 import (
-	"log"
 	"sort"
 	"time"
 )
@@ -24,7 +23,6 @@ func NewIssue(article Article) *Issue {
 func (issue *Issue) AppendComment(c Comment) {
 	t, _ := time.Parse(time.RFC3339, c.CreatedAt)
 
-	log.Println("time parsiong", t)
 	issue.Comments = append(issue.Comments, IssueComment{
 		Author:    c.GetAuthorName(),
 		CreatedAt: t,
@@ -34,7 +32,6 @@ func (issue *Issue) AppendComment(c Comment) {
 
 func (issue *Issue) SortComments() {
 	if issue != nil && len(issue.Comments) > 2 {
-		log.Println("Sort work", issue)
 		sort.Sort(ByCreateAt(issue.Comments))
 	}
 }

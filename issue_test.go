@@ -14,3 +14,12 @@ func TestIssueAppendSort(t *testing.T) {
 		t.Errorf("Sort error on issues %v, %v", i.Comments[0], i.Comments[1])
 	}
 }
+
+func TestIssueSingle(t *testing.T) {
+	i := NewIssue(Article{Title: "test", Link: "https://sss.ccc/path1/"})
+	i.AppendComment(Comment{Author: AuthorStruct{Name: "a1"}, CreatedAt: "2020-11-15T04:34:00Z", Message: "msg 1"})
+	i.SortComments()
+	if len(i.Comments) != 1 {
+		t.Errorf("Append single error.")
+	}
+}
