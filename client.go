@@ -3,6 +3,8 @@ package disqusimportorgo
 import (
 	"context"
 	"fmt"
+	"log"
+	"time"
 
 	"github.com/google/go-github/v35/github"
 	"golang.org/x/oauth2"
@@ -32,7 +34,7 @@ func (b *CommentClient) CheckIfExist() bool {
 }
 
 //CreateIssue :
-func (b *CommentClient) CreateIssue(shortLink, fullTitle, link string) error {
+func (b *CommentClient) CreateIssue(i *Issue) error {
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: b.Token},
@@ -40,20 +42,36 @@ func (b *CommentClient) CreateIssue(shortLink, fullTitle, link string) error {
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
 
-	commentBody := fmt.Sprintf("# %s \n \n \n [%s](%s)", fullTitle, link, link)
+	commentBody := fmt.Sprintf("# %s \n \n \n [%s](%s)", i.ArticleTitle, i.ArticleLink, i.ArticleLink)
 
 	input := &github.IssueRequest{
-		Title:    String(shortLink),
+		Title:    String(i.ShortLink),
 		Body:     String(commentBody),
 		Assignee: String(""),
 		Labels:   &[]string{}, //&tags,
 	}
 
-	_, _, err := client.Issues.Create(ctx, b.User, b.Repo, input)
+	gIssue, _, err := client.Issues.Create(ctx, b.User, b.Repo, input)
 	if err != nil {
 		fmt.Printf("Issues.Create returned error: %v", err)
 		return err
 	}
 
+	///Sort it before use it.
+	i.SortComments()
+
+	var id int64
+	for _, c := range i.Comments {
+		id = id + 1
+		body := fmt.Sprintf("comment written by %s, created at %s, \n\n %s", c.Author, c.CreatedAt.Format(time.RFC822), c.Body)
+		cm := &github.IssueComment{
+			ID:   &(id),
+			Body: &body}
+
+		if _, res, err := client.Issues.CreateComment(ctx, b.User, b.Repo, *gIssue.Number, cm); err != nil {
+			log.Println("Create comment res", res, " error code:", err)
+			return err
+		}
+	}
 	return nil
 }
