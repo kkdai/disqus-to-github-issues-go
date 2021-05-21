@@ -76,10 +76,11 @@ func isCommentBelongArticle(c Comment, a Article) bool {
 }
 
 func getShortPath(s1 string) string {
-	lastIndex := strings.LastIndex(s1, "/")
-	if lastIndex == len(s1)-1 {
-		lastIndex = strings.LastIndex(s1[:lastIndex], "/")
+	end := len(s1)
+	start := strings.LastIndex(s1, "/")
+	if start == len(s1)-1 {
+		start = strings.LastIndex(s1[:start], "/")
 	}
 
-	return s1[lastIndex+1:]
+	return s1[start+1 : end]
 }
