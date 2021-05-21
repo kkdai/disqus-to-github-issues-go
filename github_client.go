@@ -12,16 +12,16 @@ import (
 
 func String(v string) *string { return &v }
 
-//GitComment :
-type GitComment struct {
+//CommentClient :
+type CommentClient struct {
 	Token string
 	User  string
 	Repo  string
 }
 
-//NewGitComment :
-func NewGitComment(user, repo, token string) *GitComment {
-	new := new(GitComment)
+//NewCommentClient :
+func NewCommentClient(user, repo, token string) *CommentClient {
+	new := new(CommentClient)
 	new.User = user
 	new.Repo = repo
 	new.Token = token
@@ -29,12 +29,12 @@ func NewGitComment(user, repo, token string) *GitComment {
 }
 
 //CheckIfExist :
-func (b *GitComment) CheckIfExist() bool {
+func (b *CommentClient) CheckIfExist() bool {
 	return false
 }
 
 //CreateComment :
-func (b *GitComment) CreateComment(tweet string) error {
+func (b *CommentClient) CreateComment(tweet string) error {
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: b.Token},
@@ -61,10 +61,6 @@ func (b *GitComment) CreateComment(tweet string) error {
 			commentBody = strings.Replace(commentBody, v, "", -1)
 		}
 
-		// for _, v := range tags {
-		// 	commentBody = strings.Replace(commentBody, "" /*v*/, "", -1)
-		// }
-
 		commentBody = strings.Replace(commentBody, "#", "", -1)
 		commentBody = strings.TrimLeft(commentBody, " ")
 	}
@@ -84,10 +80,6 @@ func (b *GitComment) CreateComment(tweet string) error {
 		body = fmt.Sprintf("%s \n %s", body, commentBody)
 	}
 
-	// Push to github issue
-	// if tags == nil {
-	// 	tags = []string{}
-	// }
 	input := &github.IssueRequest{
 		Title:    String(title),
 		Body:     String(body),
