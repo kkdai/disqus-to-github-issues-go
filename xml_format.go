@@ -69,3 +69,11 @@ type Article struct {
 	IsClosed  string `xml:"isClosed"`
 	IsDeleted string `xml:"isDeleted"`
 }
+
+func (a Article) GetAuthorName() string {
+	return a.Author.Name
+}
+
+func (c Comment) GetAuthorName() string {
+	return c.Author.Name
+}

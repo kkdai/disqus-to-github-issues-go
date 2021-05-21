@@ -44,9 +44,17 @@ func TestGetAllComments(t *testing.T) {
 		t.Fatal("Get article error!")
 	}
 
-	aComment := disqus.GetAllCommentsByArticle(*article)
-	if len(aComment) < 1 {
-		t.Fatal("Get comment by article error!", aComment, comments[0])
+	if aName := article.GetAuthorName(); len(aName) == 0 {
+		t.Fatal("Get article's Author error!", article)
+	}
+
+	aComments := disqus.GetAllCommentsByArticle(*article)
+	if len(aComments) < 1 {
+		t.Fatal("Get comment's by article error!", aComments, article)
+	}
+
+	if name := comments[0].GetAuthorName(); len(name) == 0 {
+		t.Fatal("Get comment Author error!", comments[0])
 	}
 }
 
