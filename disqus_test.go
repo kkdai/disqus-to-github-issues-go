@@ -55,7 +55,7 @@ func TestGetPath(t *testing.T) {
 		"http://www.evanlin.com/e5-b0-87mt-e5-88-86-e9-a1-9e-e5-bd-99-e6-95-b4-e5-8a-a0-e4-bb-a5-e4-bf-ae-e6-94-b9-e4-ba-86/?__mode=view&amp;entry_id="}
 
 	want := []string{"reading-twitter/",
-		"?__mode=view&amp;entry_id="}
+		"e5-b0-87mt-e5-88-86-e9-a1-9e-e5-bd-99-e6-95-b4-e5-8a-a0-e4-bb-a5-e4-bf-ae-e6-94-b9-e4-ba-86/"}
 
 	for i, str := range source {
 		if out := getShortPath(str); out != want[i] {

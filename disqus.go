@@ -75,12 +75,12 @@ func isCommentBelongArticle(c Comment, a Article) bool {
 	return c.Article.ID == a.AttrID
 }
 
+//getShortPath: To extra path from disqus to github issue.
+// https://www.evanlin.com/reading-twitter/ 		--> reading-twitter/
+// https://www.evanlin.com/reading-twitter/sss?111 	--> reading-twitter/
 func getShortPath(s1 string) string {
-	end := len(s1)
-	start := strings.LastIndex(s1, "/")
-	if start == len(s1)-1 {
-		start = strings.LastIndex(s1[:start], "/")
-	}
+	end := strings.LastIndex(s1, "/")
+	start := strings.LastIndex(s1[:end], "/")
 
-	return s1[start+1 : end]
+	return s1[start+1 : end+1]
 }
