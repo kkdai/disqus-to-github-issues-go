@@ -75,7 +75,7 @@ func (d *Disqus) GetAllCommentsByArticle(a Article) []Comment {
 // PrepareImportData:
 func (d *Disqus) PrepareImportData() error {
 	if d.data == nil {
-		return fmt.Errorf("No source data")
+		return fmt.Errorf("%s\n ", "No source data.")
 	}
 
 	if d.impData != nil {
