@@ -46,7 +46,7 @@ func main() {
 	comments := disqus.GetAllComments()
 	for i, c := range comments {
 		article := disqus.GetArticleByComment(c)
-		fmt.Printf("Post: aticle ID:%s authur:%s Msg:%s  title:%s \n", c.ID, c.Author.Name, c.Message, article.Title)
+		fmt.Printf("Post: aticle ID:%s authur:%s Msg:%s  title:%s \n", c.ID, c.GetAuthorName(), c.Message, article.Title)
 		if i > 5 {
 			break
 		}
