@@ -8,7 +8,8 @@ import (
 
 //Disqus :
 type Disqus struct {
-	data *DisqusStruct
+	data    *DisqusStruct
+	impData map[string]Issue
 }
 
 // NewDisqus: create disqus object.
@@ -69,6 +70,45 @@ func (d *Disqus) GetAllCommentsByArticle(a Article) []Comment {
 	}
 
 	return retComments
+}
+
+// PrepareImportData:
+func (d *Disqus) PrepareImportData() error {
+	if d.data == nil {
+		return fmt.Errorf("No source data")
+	}
+
+	if d.impData != nil {
+		//Data exist.
+		return nil
+	}
+
+	// Make a article map for quick search cache.
+	articleMap := make(map[string]Article)
+	for _, a := range d.GetAllArticles() {
+		articleMap[a.AttrID] = a
+	}
+
+	d.impData = make(map[string]Issue)
+	for _, c := range d.GetAllComments() {
+		a := articleMap[c.Article.ID]
+		shortLink := getShortPath(a.GetArticleLink())
+		if issue, exist := d.impData[shortLink]; !exist {
+			//not exist, insert new issue.
+			ii := Issue{
+				ArticleTitle: a.Title,
+				ArticleLink:  a.Link,
+				ShortLink:    shortLink,
+			}
+			ii.AppendComment(c)
+			d.impData[shortLink] = ii
+		} else {
+			//Exist, append new comment and update issue.
+			issue.AppendComment(c)
+			d.impData[shortLink] = issue
+		}
+	}
+	return nil
 }
 
 func isCommentBelongArticle(c Comment, a Article) bool {
