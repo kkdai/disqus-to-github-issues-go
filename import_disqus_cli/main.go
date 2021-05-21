@@ -22,7 +22,7 @@ import (
 )
 
 func main() {
-	textPtr := flag.String("f", "../example/evanlin_20210517.xml", "xml file address (e.g. `../example/evanlin_20210517.xml`)")
+	textPtr := flag.String("f", "", "xml file address (e.g. `../DISQUS_EXPORT.xml`)")
 	flag.Parse()
 
 	if *textPtr == "" {
