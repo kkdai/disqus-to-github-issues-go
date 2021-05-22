@@ -1,16 +1,7 @@
-# disqus-importor-go:  Import your disqus comments into github issue in Go.
+# import_disqus_cli:  CLI to import disqus data into github issue
 
- [![GoDoc](https://godoc.org/github.com/kkdai/disqus-importor-go?status.svg)](https://godoc.org/github.com/kkdai/disqus-importor-go)  
-
-
-
-# How to usee it?
-
-```
-go get github.com/kkdai/disqus-importor-go
-```
-
-Write your own CLI tool, or just use.
+ 
+# How to Install it?
 
 ```
 go install github.com/kkdai/disqus-importor-go/import_disqus_cli
@@ -19,9 +10,9 @@ go install github.com/kkdai/disqus-importor-go/import_disqus_cli
 # How to use it?
 
 
+Reference <https://github.com/kkdai/disqus-importor-go> README.
 
-License
----------------
+# License
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
