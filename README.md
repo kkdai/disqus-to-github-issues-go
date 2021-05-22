@@ -18,6 +18,18 @@ go install github.com/kkdai/disqus-importor-go/import_disqus_cli
 
 # How to use it?
 
+Here is the parameter of `mport_disqus_cli`.
+
+- `-f`: Import disqus exported xml file. (get from <http://disqus.com/admin/discussions/export/>)
+
+- `-u`: github user name, you want to use for post github issue.
+
+- `-r`: github repo name, you want to use for post github issue.
+
+- `-t`: github token, you can request your from <https://github.com/settings/tokens>.
+
+# Result
+![](./img/imported.jpg)
 
 
 License
