@@ -1,8 +1,10 @@
 package disqusimportorgo
 
 import (
+	"encoding/xml"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"testing"
 )
@@ -70,4 +72,47 @@ func TestGetPath(t *testing.T) {
 			t.Fatal("Get path fail: str:", str, " ret:", out)
 		}
 	}
+}
+
+func TestPrepareData(t *testing.T) {
+	var articles []Article
+	articles = append(articles, Article{Title: "topic1", AttrID: "001", Link: "https:/aaa.ccc/001/"})
+	articles = append(articles, Article{Title: "topic2", AttrID: "002", Link: "https:/aaa.ccc/002/"})
+	articles = append(articles, Article{Title: "topic3", AttrID: "003", Link: "https:/aaa.ccc/003/"})
+
+	var comments []Comment
+	comments = append(comments, Comment{
+		ArticleLink: ArticleLinkStruct{ID: "002"},
+		Author:      AuthorStruct{Name: "John"},
+		CreatedAt:   "2020-05-15T04:34:00Z",
+		Message:     "msg1"})
+
+	comments = append(comments, Comment{
+		ArticleLink: ArticleLinkStruct{ID: "003"},
+		Author:      AuthorStruct{Name: "Tom"},
+		CreatedAt:   "2019-11-15T04:34:00Z",
+		Message:     "msg2"})
+
+	comments = append(comments, Comment{
+		ArticleLink: ArticleLinkStruct{ID: "002"},
+		Author:      AuthorStruct{Name: "May"},
+		CreatedAt:   "2018-12-15T04:34:00Z",
+		Message:     "msg3"})
+
+	disqusObj := DisqusStruct{
+		Articles:  articles,
+		Commments: comments}
+
+	disqusXML, _ := xml.Marshal(disqusObj)
+
+	disqus := NewDisqus(disqusXML)
+	if err := disqus.PrepareImportData(); err != nil {
+		t.Error("err:", err)
+	}
+
+	for k, v := range disqus.impData {
+		log.Println("title:", k, " data:", v.Comments)
+	}
+	log.Println("Done")
+
 }

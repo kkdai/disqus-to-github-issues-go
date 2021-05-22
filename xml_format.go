@@ -24,24 +24,25 @@ type CategoryStruct struct {
 }
 
 type Comment struct {
-	Text      string       `xml:",chardata"`
-	AttrID    string       `xml:"id,attr"`
-	ID        string       `xml:"id"`
-	Message   string       `xml:"message"`
-	CreatedAt string       `xml:"createdAt"`
-	IsDeleted string       `xml:"isDeleted"`
-	IsSpam    string       `xml:"isSpam"`
-	Author    AuthorStruct `xml:"author"`
-	Article   struct {
-		Text string `xml:",chardata"`
-		ID   string `xml:"id,attr"`
-	} `xml:"thread"`
-	Parent struct {
+	Text        string            `xml:",chardata"`
+	AttrID      string            `xml:"id,attr"`
+	ID          string            `xml:"id"`
+	Message     string            `xml:"message"`
+	CreatedAt   string            `xml:"createdAt"`
+	IsDeleted   string            `xml:"isDeleted"`
+	IsSpam      string            `xml:"isSpam"`
+	Author      AuthorStruct      `xml:"author"`
+	ArticleLink ArticleLinkStruct `xml:"thread"`
+	Parent      struct {
 		Text string `xml:",chardata"`
 		ID   string `xml:"id,attr"`
 	} `xml:"parent"`
 }
 
+type ArticleLinkStruct struct {
+	Text string `xml:",chardata"`
+	ID   string `xml:"id,attr"`
+}
 type Article struct {
 	Text     string `xml:",chardata"`
 	AttrID   string `xml:"id,attr"`

@@ -91,7 +91,7 @@ func (d *Disqus) PrepareImportData() error {
 
 	d.impData = make(map[string]Issue)
 	for _, c := range d.GetAllComments() {
-		a := articleMap[c.Article.ID]
+		a := articleMap[c.ArticleLink.ID]
 		shortLink := getShortPath(a.GetArticleLink())
 		if issue, exist := d.impData[shortLink]; !exist {
 			//not exist, insert new issue.
@@ -112,7 +112,7 @@ func (d *Disqus) PrepareImportData() error {
 }
 
 func isCommentBelongArticle(c Comment, a Article) bool {
-	return c.Article.ID == a.AttrID
+	return c.ArticleLink.ID == a.AttrID
 }
 
 //getShortPath: To extra path from disqus to github issue.
