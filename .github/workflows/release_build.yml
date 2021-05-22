@@ -9,6 +9,7 @@ jobs:
   build:
     name: GoReleaser build
     runs-on: ubuntu-latest
+    main: ./import_disqus_cli/main.go
 
     steps:
       - name: Check out code into the Go module directory
