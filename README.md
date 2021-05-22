@@ -13,7 +13,7 @@ go get github.com/kkdai/disqus-importor-go
 Write your own CLI tool, or just use.
 
 ```
-go install github.com/kkdai/disqus-importor-go/import_disqus_cli
+go install github.com/kkdai/disqus-importor-go/cmd/import_disqus_cli
 ```
 
 # How to use it?
