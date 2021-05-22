@@ -52,8 +52,9 @@ func main() {
 		return
 	}
 
+	fmt.Println("Your disqus xml has ", len(disqus.GetAllComments()), " comments in ", disqus.GetAllImportCommentArticle())
+
 	if *token == "" || *repo == "" || *user == "" {
-		fmt.Println("Your disqus xml has ", len(disqus.GetAllComments()), " comments in ", disqus.GetAllImportCommentArticle())
 		fmt.Println("Please input github related option to import into github")
 		flag.PrintDefaults()
 		return
