@@ -4,7 +4,6 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"testing"
 )
@@ -110,7 +109,11 @@ func TestPrepareData(t *testing.T) {
 		t.Error("err:", err)
 	}
 
-	for k, v := range disqus.impData {
-		log.Println("title:", k, " data:", v.Comments)
+	if len(disqus.impData) != 2 {
+		t.Error("PrepareImportData article count error!")
+	}
+
+	if len(disqus.impData["002/"].Comments) != 2 {
+		t.Error("PrepareImportData comment count error!")
 	}
 }
