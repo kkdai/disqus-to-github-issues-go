@@ -1,4 +1,4 @@
 .DS_Store
 disqus-importor-go
 import_disqus_cli/import_disqus_cli
-cmd/import_disqus_cli/README.md
+cmd/import_disqus_cli/import_disqus_cli
