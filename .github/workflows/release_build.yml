@@ -5,11 +5,13 @@ on:
     tags:
       - "*" # triggers only if push new tag version, like `0.8.4` or else
 
+builds:
+    main: ./import_disqus_cli
+
 jobs:
   build:
     name: GoReleaser build
     runs-on: ubuntu-latest
-    main: ./import_disqus_cli/main.go
 
     steps:
       - name: Check out code into the Go module directory
