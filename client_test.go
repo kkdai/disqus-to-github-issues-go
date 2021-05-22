@@ -8,7 +8,7 @@ import (
 func TestPostGithubIssue(t *testing.T) {
 	token := os.Getenv("Token")
 	user := os.Getenv("User")
-	repo := os.Getenv("Repo")
+	repo := os.Getenv("Repos")
 
 	if len(token) == 0 || len(user) == 0 || len(user) == 0 {
 		t.Skip("Please input github env")

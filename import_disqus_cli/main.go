@@ -22,15 +22,19 @@ import (
 )
 
 func main() {
-	textPtr := flag.String("f", "", "xml file address (e.g. `../DISQUS_EXPORT.xml`)")
+	filePtr := flag.String("f", "", "xml file address (e.g. `../DISQUS_EXPORT.xml`)")
+	token := flag.String("t", "", "github token")
+	user := flag.String("u", "", "github user name")
+	repo := flag.String("r", "", "github import repo name")
+
 	flag.Parse()
 
-	if *textPtr == "" {
+	if *filePtr == "" {
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
 
-	xmlFile, err := os.Open(*textPtr)
+	xmlFile, err := os.Open(*filePtr)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -43,12 +47,21 @@ func main() {
 		return
 	}
 
-	comments := disqus.GetAllComments()
-	for i, c := range comments {
-		article := disqus.GetArticleByComment(c)
-		fmt.Printf("Post: aticle ID:%s authur:%s Msg:%s  title:%s \n", c.ID, c.GetAuthorName(), c.Message, article.Title)
-		if i > 5 {
-			break
-		}
+	if err := disqus.PrepareImportData(); err != nil {
+		fmt.Println("Prepare data error:", err)
+		return
 	}
+
+	if *token == "" || *repo == "" || *user == "" {
+		fmt.Println("Your disqus xml has ", len(disqus.GetAllComments()), " comments in ", disqus.GetAllImportCommentArticle())
+		fmt.Println("Please input github related option to import into github")
+		flag.PrintDefaults()
+		return
+	}
+
+	if err := disqus.PostToGithubIssue(*user, *repo, *token); err != nil {
+		fmt.Println("PostToGithubIssue error:", err)
+		return
+	}
+	fmt.Println("Import into github done! repo=", *repo)
 }

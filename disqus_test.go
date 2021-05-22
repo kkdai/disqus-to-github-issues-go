@@ -113,6 +113,4 @@ func TestPrepareData(t *testing.T) {
 	for k, v := range disqus.impData {
 		log.Println("title:", k, " data:", v.Comments)
 	}
-	log.Println("Done")
-
 }

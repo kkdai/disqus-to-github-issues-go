@@ -3,6 +3,7 @@ package disqusimportorgo
 import (
 	x "encoding/xml"
 	"fmt"
+	"log"
 	"strings"
 )
 
@@ -111,6 +112,37 @@ func (d *Disqus) PrepareImportData() error {
 	return nil
 }
 
+// PostToGithubIssue:
+func (d *Disqus) PostToGithubIssue(user, repo, token string) error {
+	if d.data == nil {
+		return fmt.Errorf("%s\n ", "No source data.")
+	}
+
+	if d.impData == nil {
+		//Data exist.
+		return fmt.Errorf("%s\n ", "No Imported data.")
+
+	}
+
+	client := NewCommentClient(user, repo, token)
+	for _, v := range d.impData {
+		if err := client.CreateIssue(&v); err != nil {
+			log.Println("Create github issue failed:", err)
+		}
+		fmt.Println("Issue created title:", v.ShortLink, " include comment number:", len(v.Comments))
+	}
+
+	return nil
+}
+
+// GetAllImportCommentArticle:
+func (d *Disqus) GetAllImportCommentArticle() int {
+	if d.data == nil || d.impData == nil {
+		return 0
+	}
+
+	return len(d.impData)
+}
 func isCommentBelongArticle(c Comment, a Article) bool {
 	return c.ArticleLink.ID == a.AttrID
 }

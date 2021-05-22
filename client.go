@@ -28,7 +28,7 @@ func NewCommentClient(user, repo, token string) *CommentClient {
 	return new
 }
 
-//CheckIfExist :
+//CheckIfExist : Implement later.
 func (b *CommentClient) CheckIfExist() bool {
 	return false
 }
@@ -51,10 +51,19 @@ func (b *CommentClient) CreateIssue(i *Issue) error {
 		Labels:   &[]string{}, //&tags,
 	}
 
-	gIssue, _, err := client.Issues.Create(ctx, b.User, b.Repo, input)
+	var gIssue *github.Issue
+	var err error
+	gIssue, _, err = client.Issues.Create(ctx, b.User, b.Repo, input)
 	if err != nil {
-		fmt.Printf("Issues.Create returned error: %v", err)
-		return err
+		fmt.Println("Issues.Create returned error: ", err, " retry after 2 seconds.")
+		time.Sleep(2 * time.Second)
+
+		//retry once
+		gIssue, _, err = client.Issues.Create(ctx, b.User, b.Repo, input)
+		if err != nil {
+			fmt.Println("Issues.Create returned error: ", err, " retry after 2 seconds.")
+			return err
+		}
 	}
 
 	///Sort it before use it.
@@ -72,6 +81,9 @@ func (b *CommentClient) CreateIssue(i *Issue) error {
 			log.Println("Create comment res", res, " error code:", err)
 			return err
 		}
+
+		//sleep 500 millisecond to avoid github limited.
+		time.Sleep(300 * time.Millisecond)
 	}
 	return nil
 }
