@@ -3,3 +3,4 @@ disqus-importor-go
 import_disqus_cli/import_disqus_cli
 cmd/import_disqus_cli/import_disqus_cli
 dist/
+dist/
