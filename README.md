@@ -32,6 +32,9 @@ Here is the parameter of `mport_disqus_cli`.
 # Result
 ![](./img/imported.jpg)
 
+How it works in my blog. <https://www.evanlin.com/>
+
+![](./img/blog_result.jpg)
 
 License
 ---------------
