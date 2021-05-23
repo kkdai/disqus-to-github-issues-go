@@ -1,24 +1,24 @@
-# disqus-importor-go:  Import your disqus comments into github issue in Go.
+# disqus-to-github-issues-go:  Import your disqus comments into github issue in Go.
 
- [![GoDoc](https://godoc.org/github.com/kkdai/disqus-importor-go?status.svg)](https://godoc.org/github.com/kkdai/disqus-importor-go)  
+ [![GoDoc](https://godoc.org/github.com/kkdai/disqus-to-github-issues-go?status.svg)](https://godoc.org/github.com/kkdai/disqus-to-github-issues-go)  
 
 
 
 # How to usee it?
 
 ```
-go get github.com/kkdai/disqus-importor-go
+go get github.com/kkdai/disqus-to-github-issues-go
 ```
 
 Write your own CLI tool, or just use.
 
 ```
-go install github.com/kkdai/disqus-importor-go/cmd/import_disqus_cli
+go install github.com/kkdai/disqus-to-github-issues-go/cmd/import_disqus_cli
 ```
 
 # How to use it?
 
-Here is the parameter of `mport_disqus_cli`.
+Here is the parameter of `import_disqus_cli`.
 
 - `-f`: Import disqus exported xml file. (get from <http://disqus.com/admin/discussions/export/>)
 
